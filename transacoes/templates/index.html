@@ -1,1 +1,16 @@
-<h1>Hello World!</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>printar</title>
+</head>
+
+<body>
+    <h1>Importar Transações</h1>
+    <form for="file_name" method="POST" action="printar/" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" id="file_name" name="file_name"><br><br>
+        <input type="submit">
+    </form>
+</body>
+</html>
