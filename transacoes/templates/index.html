@@ -6,11 +6,24 @@
 </head>
 
 <body>
-    <h1>Importar Transações</h1>
-    <form for="file_name" method="POST" action="" enctype="multipart/form-data">
+    <h1>IMPORTAR TRANSAÇÕES</h1>
+    <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="file" id="file_name" name="file_name"><br><br>
         <input type="submit">
     </form>
+    <h1>IMPORTAÇÕES REALIZADAS</h1>
+    <table border="1">
+        <tr>
+            <td>DATA TRANSAÇÕES</td>
+            <td>DATA IMPORTAÇÃO</td>
+        </tr>
+        {% for objeto in todos_objetos.reverse %}
+        <tr>
+            <td>{{ objeto.data_transacao }}</td>
+            <td>{{ objeto.data_importacao }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>
