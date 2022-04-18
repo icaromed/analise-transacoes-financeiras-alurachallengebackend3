@@ -4,19 +4,20 @@
 
 
 {% include 'partials/_menu.html' %}
-
 <div class="text-center">
     <h2 class="display-5">Cadastro</h2><br>
-
+</div>
+    {% include 'partials/_alerts.html' %}
+<div class="text-center">
     <form method="POST" action="{% url 'cadastro' %}" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group mb-3">
             <label for="usuario" class="form-label">Nome</label>
-            <input type="text" class="form-control" id="usuario" name="usuario">
+            <input type="text" class="form-control" id="usuario" name="usuario" required>
         </div>
         <div class="form-group mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email">
+            <input type="email" class="form-control" id="email" name="email" required>
         </div>
         <button type="submit" class="btn btn-dark">Cadastrar</button>
     </form>
