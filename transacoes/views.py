@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import FileResponse
 from .models import Controller, DataImportacoes
 from datetime import datetime
+from django.contrib import messages
 
 
 def index(request):
@@ -11,21 +12,28 @@ def index(request):
         return render(request, 'index.html', {"todos_objetos": todos_objetos})
 
     elif request.method == 'POST':
+        if not request.FILES:
+            messages.error(request, 'Nenhum arquivo foi selecionado')
+            return redirect('index')
+        else:
+            nome = request.FILES['file_name'].name
 
-        nome = request.FILES['file_name'].name
         if not nome.endswith('.csv'):
-            raise ValueError("O arquivo não é do formato 'csv'")
+            messages.error(request, 'O arquivo não é do formato .csv')
+            return redirect('index')
 
         file_h = FileResponse(request.FILES['file_name'])
         comandos = list(file_h.streaming_content)[0].decode('utf-8').split('\n')
 
         data_padrao = comandos[0][-19:-9].strip()
         if not data_padrao:
-            raise ValueError("O arquivo não pode estar vazio")
+            messages.error(request, 'O arquivo não pode estar vazio')
+            return redirect('index')
 
         data_validacao = "/".join(data_padrao.split('-')[-1::-1])
         if DataImportacoes.objects.filter(data_transacao=data_validacao).exists():
-            raise ValueError("Data de transação já utilizada")
+            messages.error(request, 'Data de transação já utilizada')
+            return redirect('index')
 
         comandos_efetuados = []
         for pos in range(len(comandos)):
@@ -52,5 +60,5 @@ def index(request):
         importacao = DataImportacoes(data_transacao="/".join(data_padrao.split('-')[-1::-1]),
                                      data_importacao=datetime.now().strftime('%d/%m/%Y - %H:%M:%S'))
         importacao.save()
-
+        messages.success(request, 'Os arquivos foram salvos com sucesso')
         return render(request, 'index.html', {"todos_objetos": todos_objetos})

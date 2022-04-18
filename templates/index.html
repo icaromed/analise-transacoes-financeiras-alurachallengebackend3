@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% include 'partials/_menu.html' %}
+        <div class="text-center">
+            <h2 class="display-5">Importar Transações</h2>
+        </div>
+            {% include 'partials/_alerts.html' %}
+        <div class="text-center">
+            <form method="POST" action="{% url 'index' %}" enctype="multipart/form-data">
+
+                <div class="mb-3"><br>
+                    <input name="file_name" class="form-control" id="formFileLg" type="file">
+                    {% csrf_token %}
+                </div>
+
+                <button type="submit" class="btn btn-dark mb-3">Importar</button>
+
+            </form>
+        </div><br>
+
+            <div class="text-center">
+            <h2 class="display-5">Importações Realizadas</h2><br>
+
+            <table class="table table-dark table-hover table-borderless">
+                <thead class="table-secondary">
+                    <tr>
+                        <td scope="col">Datas das Transações</td>
+                        <td scope="col">Datas das Importações</td>
+                    </tr>
+                <thead>
+                <tbody>
+                    {% for objeto in todos_objetos %}
+                    <tr>
+                        <td>{{ objeto.data_transacao }}</td>
+                        <td>{{ objeto.data_importacao }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+{% endblock %}
