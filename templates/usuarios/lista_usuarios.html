@@ -26,8 +26,7 @@
             <td>
                 <div class="mb-3 input-group">
                     <form method="GET" action="{{ usuario.id }}/editar_usuario">
-                         {% csrf_token %}
-                            <button type="submit" class="btn btn-secondary">Editar</button>
+                        <button type="submit" class="btn btn-secondary">Editar</button>
                     </form>
                     <form method="POST" action="{{ usuario.id }}/remover_usuario">
                         {% csrf_token %}

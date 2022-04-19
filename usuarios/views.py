@@ -76,6 +76,11 @@ def editar_usuario(request, id_n):
         return render(request, 'usuarios/editar_usuario.html', {"user": user})
 
     if request.method == "POST":
+
+        username = request.POST['username']
+        email = request.POST['email']
+        senha = request.POST['senha']
+        # Continue aqui
         return redirect('lista_usuarios')
 
 
@@ -97,7 +102,9 @@ def login(request):
             auth.login(request, user)
             print('Você está logado')
             return redirect('index')
-
+        else:
+            messages.error(request, 'Senha incorreta')
+            return redirect('login')
 
 def logout(request):
     if not request.user.is_authenticated:
