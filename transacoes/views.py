@@ -6,6 +6,8 @@ from django.contrib import messages
 
 
 def index(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
     todos_objetos = DataImportacoes.objects.all().order_by('-data_transacao')
 
     if request.method == 'GET':

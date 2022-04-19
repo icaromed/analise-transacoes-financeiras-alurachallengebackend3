@@ -1,10 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 import random
 import smtplib
-from django.contrib import messages
+from django.contrib import messages, auth
 from django.contrib.auth.models import User
 
+
 def cadastro(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
     if request.method == "GET":
         return render(request, 'usuarios/cadastro.html')
 
@@ -29,19 +32,78 @@ def cadastro(request):
         user = User.objects.create_user(username, email, senha)
         eviar_email(email, senha)
         user.save()
+        return redirect('lista_usuarios')
+
+
+def lista_usuarios(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    usuarios_validos = User.objects.exclude(username='Admin')
+    if request.method == "GET":
+        return render(request, 'usuarios/lista_usuarios.html', {"usuarios_validos": usuarios_validos})
+    elif request.method == "POST":
+
+        return render(request, 'usuarios/lista_usuarios.html', {"usuarios_validos": usuarios_validos})
+
+
+def remover_usuario(request, id_n):
+    if not request.user.is_authenticated:
         return redirect('login')
 
+    user = get_object_or_404(User, id=id_n)
 
-def dashboard(request):
-    pass
+    if int(id_n) == request.user.id:
+        messages.error(request, 'Não é possivel excluir o próprio usuário')
+        return redirect('lista_usuarios')
+
+    if int(id_n) == User.objects.filter(id=2).get().id:
+        messages.error(request, 'Não é possivel excluir o usuário padrão')
+        return redirect('lista_usuarios')
+
+    if request.method == "POST":
+        user.delete()
+        return redirect('lista_usuarios')
+    return redirect('lista_usuarios')
+
+
+def editar_usuario(request, id_n):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    user = get_object_or_404(User, id=id_n)
+
+    if request.method == "GET":
+        return render(request, 'usuarios/editar_usuario.html', {"user": user})
+
+    if request.method == "POST":
+        return redirect('lista_usuarios')
 
 
 def login(request):
-    return render(request, 'usuarios/login.html')
+    if request.method == "GET":
+        return render(request, 'usuarios/login.html')
+
+    elif request.method == "POST":
+        email = request.POST['email']
+        senha = request.POST['senha']
+
+        if not User.objects.filter(email=email).exists():
+            messages.error(request, 'Email não cadastrado')
+            return redirect('login')
+
+        username = User.objects.filter(email=email).values_list('username', flat=True).get()
+        user = auth.authenticate(request, username=username, password=senha)
+        if user is not None:
+            auth.login(request, user)
+            print('Você está logado')
+            return redirect('index')
 
 
 def logout(request):
-    pass
+    if not request.user.is_authenticated:
+        return redirect('login')
+    auth.logout(request)
+    return redirect('login')
 
 
 def eviar_email(endereco, senha):
@@ -70,3 +132,4 @@ def eviar_email(endereco, senha):
         print("Email sent successfully!")
     except Exception as ex:
         print("Something went wrong….", ex)
+

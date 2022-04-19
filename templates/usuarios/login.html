@@ -3,8 +3,19 @@
 {% block content %}
 
 {% include 'partials/_menu.html' %}
+<h2 class="display-5 text-center">Login</h2><br>
+{% include 'partials/_alerts.html' %}
 
-<div class="text-center">
-    <h2 class="display-5">Login</h2>
-</div>
+<form method="POST" action="{% url 'login' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <div class="form-group mb-3">
+        <label for="senha" class="form-label">Senha</label>
+        <input type="password" class="form-control" id="senha" name="senha" required>
+    </div>
+    <button type="submit" class="btn btn-dark">Login</button>
+</form>
 {% endblock %}

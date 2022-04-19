@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+{% include 'partials/_menu.html' %}
+<h2 class="display-5 text-center">Usuários Cadastrados</h2><br>
+<a href="{% url 'cadastro' %}" class="btn btn-dark" role="button">Novo</a>
+{% include 'partials/_alerts.html' %}
+<br>
+
+<table class="table table-dark table-hover table-borderless">
+    <thead class="table-secondary">
+        <tr>
+            <td scope="col">ID</td>
+            <td scope="col">NOME</td>
+            <td scope="col">EMAIL</td>
+            <td scope="col">OPÇÕES</td>
+        </tr>
+    <thead>
+    <tbody>
+    {% for usuario in usuarios_validos %}
+        <tr>
+            <td>{{ usuario.id }}</td>
+            <td>{{ usuario.username }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>
+                <div class="mb-3 input-group">
+                    <form method="GET" action="{{ usuario.id }}/editar_usuario">
+                         {% csrf_token %}
+                            <button type="submit" class="btn btn-secondary">Editar</button>
+                    </form>
+                    <form method="POST" action="{{ usuario.id }}/remover_usuario">
+                        {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Remover</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

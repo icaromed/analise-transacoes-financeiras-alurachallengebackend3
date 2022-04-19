@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+{% include 'partials/_menu.html' %}
+<h2 class="display-5 text-center">Editar Usuário: {{ user.username }}</h2><br>
+{% include 'partials/_alerts.html' %}
+
+<div class="input-group mb-3">
+    <form method="POST" action="{% url 'lista_usuarios' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-dark input-group-append">Atualizar</button>
+    </form>
+</div>
+
+{% endblock %}
