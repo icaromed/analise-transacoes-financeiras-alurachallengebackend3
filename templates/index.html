@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load id_user %}
 {% block content %}
 
 {% include 'partials/_menu.html' %}
@@ -29,6 +30,7 @@
                     <tr>
                         <td scope="col">Datas das Transações</td>
                         <td scope="col">Datas das Importações</td>
+                        <td scope="col">Usuários</td>
                     </tr>
                 <thead>
                 <tbody>
@@ -36,6 +38,7 @@
                     <tr>
                         <td>{{ objeto.data_transacao }}</td>
                         <td>{{ objeto.data_importacao }}</td>
+                        <td>{{ objeto.id_usuario|get_item }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

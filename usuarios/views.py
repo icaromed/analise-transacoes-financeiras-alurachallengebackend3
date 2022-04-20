@@ -14,7 +14,7 @@ def cadastro(request):
     elif request.method == "POST":
         email = request.POST['email']
         username = request.POST['usuario']
-        senha = str(random.randint(100000, 999999))
+        senha = str(random.random())[2:8]
 
         if not username.strip():
             messages.error(request, 'O usuário não pode ficar vazio')
@@ -79,9 +79,35 @@ def editar_usuario(request, id_n):
 
         username = request.POST['username']
         email = request.POST['email']
-        senha = request.POST['senha']
-        # Continue aqui
-        return redirect('lista_usuarios')
+
+        if not username.strip():
+            messages.error(request, 'O usuário não pode ficar vazio')
+            return redirect('lista_usuarios')
+
+        if not email.strip():
+            messages.error(request, 'O Email não pode ficar vazio')
+            return redirect('lista_usuarios')
+
+        if username == user.username and email == user.email:
+            messages.success(request, 'Os dados do usuário foram atualizados')
+            return redirect('lista_usuarios')
+
+        if User.objects.filter(username=username).exclude(id=id_n).exists():
+            messages.error(request, 'Este Nome de Usuário já foi cadastrado')
+            return redirect('lista_usuarios')
+
+        if User.objects.filter(email=email).exclude(id=id_n).exists():
+            messages.error(request, 'Este Email já foi cadastrado')
+            return redirect('lista_usuarios')
+        else:
+            updated_user = User(id=id_n, email=email, username=username,
+                                password=user.password, last_login=user.last_login,
+                                is_superuser=user.is_superuser, is_staff=user.is_staff,
+                                is_active=user.is_active, date_joined=user.date_joined)
+            updated_user.save()
+            messages.success(request, 'Os dados do usuário foram atualizados')
+            return redirect('lista_usuarios')
+    return redirect('lista_usuarios')
 
 
 def login(request):
@@ -105,6 +131,7 @@ def login(request):
         else:
             messages.error(request, 'Senha incorreta')
             return redirect('login')
+
 
 def logout(request):
     if not request.user.is_authenticated:

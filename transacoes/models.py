@@ -15,3 +15,4 @@ class Controller(models.Model):
 class DataImportacoes(models.Model):
     data_importacao = models.CharField(max_length=150)
     data_transacao = models.CharField(max_length=150)
+    id_usuario = models.CharField(max_length=10)

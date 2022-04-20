@@ -8,6 +8,7 @@ from django.contrib import messages
 def index(request):
     if not request.user.is_authenticated:
         return redirect('login')
+
     todos_objetos = DataImportacoes.objects.all().order_by('-data_transacao')
 
     if request.method == 'GET':
@@ -60,7 +61,8 @@ def index(request):
             comandos_efetuados.append(comando)
 
         importacao = DataImportacoes(data_transacao="/".join(data_padrao.split('-')[-1::-1]),
-                                     data_importacao=datetime.now().strftime('%d/%m/%Y - %H:%M:%S'))
+                                     data_importacao=datetime.now().strftime('%d/%m/%Y - %H:%M:%S'),
+                                     id_usuario=request.user.id)
         importacao.save()
         messages.success(request, 'Os arquivos foram salvos com sucesso')
         return render(request, 'index.html', {"todos_objetos": todos_objetos})
