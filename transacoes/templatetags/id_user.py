@@ -1,5 +1,5 @@
 from django.template.defaulttags import register
-from django.contrib.auth.models import User
+from usuarios.models import User
 
 
 @register.filter

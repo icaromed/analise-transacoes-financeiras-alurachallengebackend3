@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load importacoes %}
+{% load transacoes %}
+{% load format_reais %}
+{% load usuario_importacao %}
+{% block content %}
+
+{% include 'partials/_menu.html' %}
+    <h2 class="display-5 text-center">Detalhes da Importação</h2><br>
+{% include 'partials/_alerts.html' %}
+<div class="mb-3">
+
+
+<table class="table table-dark table-bordered table-hover w-50 mx-auto">
+    <thead class="table-secondary">
+    <tr>
+        <td class="list-group-item list-group-item-dark">Importado em <strong>{{ data|importacoes }}</strong></td>
+        <td class="list-group-item list-group-item-dark">Importado por <strong>{{ data|usuario_importacao }}</strong></td>
+        <td class="list-group-item list-group-item-dark">Data transações <strong>{{ data|transacoes }}</strong></td>
+    </tr>
+    </thead>
+</table><br>
+
+
+<!--    class="text-center"-->
+<h2 class="display-5 text-center">Transações Importadas</h2><br>
+     <table class="table table-dark table-bordered table-hover w-50 mx-auto">
+         <div class="container">
+             <thead class="table-secondary">
+             <tr>
+                <td colspan="3">ORIGEM</td>
+                <td colspan="3">DESTINO</td>
+                <td rowspan="2" class="align-middle">VALOR</td>
+             </tr>
+             <tr>
+                 <td>BANCO</td>
+                 <td>AGÊNCIA</td>
+                 <td>CONTA</td>
+                 <td>BANCO</td>
+                 <td>AGÊNCIA</td>
+                 <td>CONTA</td>
+             </tr>
+             </thead>
+
+             <tbody>
+             {% for user in users %}
+             <tr>
+                 <td>{{user.banco_origem}}</td>
+                 <td>{{user.agencia_origem}}</td>
+                 <td>{{user.conta_origem}}</td>
+                 <td>{{user.banco_destino}}</td>
+                 <td>{{user.agencia_destino}}</td>
+                 <td>{{user.conta_destino}}</td>
+                 <td>{{user.valor_transacao|format_reais}}</td>
+             </tr>
+             </tbody>
+             {% endfor %}
+         </div>
+     </table>
+{% endblock %}

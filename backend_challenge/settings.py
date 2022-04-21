@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'backend_challenge.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'alura_transacoes',
+        'NAME': 'alura_transacoes_teste',
         'USER': 'postgres',
         'PASSWORD': '1234',
         'HOST': 'localhost',
@@ -138,3 +138,6 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
     messages.SUCCESS: 'success',
     }
+
+# User Model
+AUTH_USER_MODEL = 'usuarios.User'

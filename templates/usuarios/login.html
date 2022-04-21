@@ -6,7 +6,7 @@
 <h2 class="display-5 text-center">Login</h2><br>
 {% include 'partials/_alerts.html' %}
 
-<form method="POST" action="{% url 'login' %}" enctype="multipart/form-data">
+<form class="w-50 mx-auto" method="POST" action="{% url 'login' %}" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group mb-3">
         <label for="email" class="form-label">Email</label>

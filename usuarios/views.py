@@ -2,12 +2,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 import random
 import smtplib
 from django.contrib import messages, auth
-from django.contrib.auth.models import User
+from .models import User
 
 
 def cadastro(request):
     if not request.user.is_authenticated:
         return redirect('login')
+    if request.user.deleted:
+        return redirect('login')
+
     if request.method == "GET":
         return render(request, 'usuarios/cadastro.html')
 
@@ -38,7 +41,10 @@ def cadastro(request):
 def lista_usuarios(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    usuarios_validos = User.objects.exclude(username='Admin')
+    if request.user.deleted:
+        return redirect('login')
+
+    usuarios_validos = User.objects.exclude(username='Admin').exclude(deleted=True)
     if request.method == "GET":
         return render(request, 'usuarios/lista_usuarios.html', {"usuarios_validos": usuarios_validos})
     elif request.method == "POST":
@@ -49,6 +55,8 @@ def lista_usuarios(request):
 def remover_usuario(request, id_n):
     if not request.user.is_authenticated:
         return redirect('login')
+    if request.user.deleted:
+        return redirect('login')
 
     user = get_object_or_404(User, id=id_n)
 
@@ -56,18 +64,26 @@ def remover_usuario(request, id_n):
         messages.error(request, 'Não é possivel excluir o próprio usuário')
         return redirect('lista_usuarios')
 
-    if int(id_n) == User.objects.filter(id=2).get().id:
+    if int(id_n) == User.objects.filter(username="Admin").get().id:
         messages.error(request, 'Não é possivel excluir o usuário padrão')
         return redirect('lista_usuarios')
 
     if request.method == "POST":
-        user.delete()
+        updated_user = User(id=id_n, email=user.email, username=user.username,
+                            password=user.password, last_login=user.last_login,
+                            is_superuser=user.is_superuser, is_staff=user.is_staff,
+                            is_active=user.is_active, date_joined=user.date_joined,
+                            deleted=True)
+        updated_user.save()
+        messages.success(request, 'Usuário removido com sucesso')
         return redirect('lista_usuarios')
     return redirect('lista_usuarios')
 
 
 def editar_usuario(request, id_n):
     if not request.user.is_authenticated:
+        return redirect('login')
+    if request.user.deleted:
         return redirect('login')
 
     user = get_object_or_404(User, id=id_n)
@@ -121,12 +137,10 @@ def login(request):
         if not User.objects.filter(email=email).exists():
             messages.error(request, 'Email não cadastrado')
             return redirect('login')
-
         username = User.objects.filter(email=email).values_list('username', flat=True).get()
         user = auth.authenticate(request, username=username, password=senha)
         if user is not None:
             auth.login(request, user)
-            print('Você está logado')
             return redirect('index')
         else:
             messages.error(request, 'Senha incorreta')
@@ -136,6 +150,9 @@ def login(request):
 def logout(request):
     if not request.user.is_authenticated:
         return redirect('login')
+    if request.user.deleted:
+        return redirect('login')
+
     auth.logout(request)
     return redirect('login')
 

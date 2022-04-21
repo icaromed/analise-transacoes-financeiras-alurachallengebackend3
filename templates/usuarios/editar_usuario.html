@@ -4,11 +4,11 @@
 
 
 {% include 'partials/_menu.html' %}
-<h2 class="display-5 text-center">Editar Usuário: {{ user.username }}</h2><br>
+<h2 class="display-5 text-center">Editar Usuário</h2><br>
 {% include 'partials/_alerts.html' %}
 
 <div class="input-group mb-3">
-    <form method="POST" action="/usuarios/{{ user.id }}/editar_usuario" enctype="multipart/form-data">
+    <form class="w-50 mx-auto" method="POST" action="/usuarios/{{ user.id }}/editar_usuario" enctype="multipart/form-data">
         {% csrf_token %}
          <div class="form-group mb-3">
             <label for="username">Nome de Usuário:</label>

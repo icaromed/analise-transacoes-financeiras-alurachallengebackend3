@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load id_user %}
+{% load get_url %}
 {% block content %}
 
 {% include 'partials/_menu.html' %}
     <h2 class="display-5 text-center">Importar Transações</h2>
 {% include 'partials/_alerts.html' %}
-        <div class="text-center input-group mb-3">
+
+        <div class="input-group mb-3 w-50 flex-column mx-auto">
             <form method="POST" action="{% url 'index' %}" enctype="multipart/form-data">
 
                 <div class="mb-3 text-center"><br>
@@ -24,23 +26,32 @@
 
 
             <h2 class="display-5 text-center">Importações Realizadas</h2><br>
-
-            <table class="table table-dark table-hover table-borderless">
-                <thead class="table-secondary">
-                    <tr>
-                        <td scope="col">Datas das Transações</td>
-                        <td scope="col">Datas das Importações</td>
-                        <td scope="col">Usuários</td>
-                    </tr>
-                <thead>
-                <tbody>
-                    {% for objeto in todos_objetos %}
-                    <tr>
-                        <td>{{ objeto.data_transacao }}</td>
-                        <td>{{ objeto.data_importacao }}</td>
-                        <td>{{ objeto.id_usuario|get_item }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="w-50 mx-auto">
+                <table class="table table-dark table-hover table-borderless">
+                    <thead class="table-secondary">
+                        <tr>
+                            <td scope="col">Datas das Transações</td>
+                            <td scope="col">Datas das Importações</td>
+                            <td scope="col">Usuários</td>
+                            <td scope="col">Opções</td>
+                        </tr>
+                    <thead>
+                    <tbody>
+                        {% for objeto in todos_objetos %}
+                        <tr>
+                            <td>{{ objeto.data_transacao }}</td>
+                            <td>{{ objeto.data_importacao }}</td>
+                            <td>{{ objeto.id_usuario|get_item }}</td>
+                            <td>
+                                <div class="mb-3 input-group">
+                                    <form method="GET" action="{{ objeto.data_transacao|get_url }}">
+                                        <button type="submit" class="btn btn-secondary">Detalhar</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 {% endblock %}
