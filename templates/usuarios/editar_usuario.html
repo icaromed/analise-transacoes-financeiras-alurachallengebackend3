@@ -8,7 +8,7 @@
 {% include 'partials/_alerts.html' %}
 
 <div class="input-group mb-3">
-    <form class="w-50 mx-auto" method="POST" action="/usuarios/{{ user.id }}/editar_usuario" enctype="multipart/form-data">
+    <form class="w-50 mx-auto" method="POST" action="{% url 'editar_usuario' user.id %}" enctype="multipart/form-data">
         {% csrf_token %}
          <div class="form-group mb-3">
             <label for="username">Nome de Usuário:</label>

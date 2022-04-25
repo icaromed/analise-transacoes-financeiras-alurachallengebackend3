@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import FileResponse
-from .models import Controller, DataImportacoes
+from transacoes.models import Controller, DataImportacoes
 from datetime import datetime
 from django.contrib import messages
 
@@ -14,7 +14,7 @@ def index(request):
     todos_objetos = DataImportacoes.objects.all().order_by('-data_transacao')
 
     if request.method == 'GET':
-        return render(request, 'index.html', {"todos_objetos": todos_objetos})
+        return render(request, 'transacoes/index.html', {"todos_objetos": todos_objetos})
 
     elif request.method == 'POST':
         if not request.FILES:
@@ -67,17 +67,4 @@ def index(request):
                                      id_usuario=request.user.id)
         importacao.save()
         messages.success(request, 'Os arquivos foram salvos com sucesso')
-        return render(request, 'index.html', {"todos_objetos": todos_objetos})
-
-
-def detalhar(request, data):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    if request.user.deleted:
-        return redirect('login')
-
-    data = f"{data[0:2]}/{data[2:4]}/{data[4:]}"
-    data_h = "-".join(reversed(data.split("/")))
-    if request.method == 'GET':
-        users = Controller.objects.filter(data_hora_transacao__startswith=data_h)
-        return render(request, 'detalhar.html', {"data": data, "users": users})
+        return render(request, 'transacoes/index.html', {"todos_objetos": todos_objetos})

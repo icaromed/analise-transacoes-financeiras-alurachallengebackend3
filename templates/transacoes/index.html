@@ -44,7 +44,7 @@
                             <td>{{ objeto.id_usuario|get_item }}</td>
                             <td>
                                 <div class="mb-3 input-group">
-                                    <form method="GET" action="{{ objeto.data_transacao|get_url }}">
+                                    <form method="GET" action="{% url 'detalhar' objeto.data_transacao|get_url %}">
                                         <button type="submit" class="btn btn-secondary">Detalhar</button>
                                     </form>
                                 </div>
