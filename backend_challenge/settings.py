@@ -141,3 +141,6 @@ MESSAGE_TAGS = {
 
 # User Model
 AUTH_USER_MODEL = 'usuarios.User'
+
+# Date Format
+DATE_INPUT_FORMATS = ['%m-%Y']
