@@ -3,6 +3,7 @@ from django.contrib import messages
 from usuarios.models import User
 import smtplib
 import random
+from decouple import config
 
 
 def cadastro(request):
@@ -42,8 +43,8 @@ def cadastro(request):
 
 
 def eviar_email(endereco, senha):
-    gmail_user = 'senha.aleatoria.python@gmail.com'
-    gmail_password = '123QWER4'
+    gmail_user = config('gmail_user')
+    gmail_password = config('gmail_password')
 
     sent_from = gmail_user
     to = [f'{endereco}']
