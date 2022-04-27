@@ -1,29 +1,32 @@
 {% load static %}
 
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark justify-content-between">
-
     <ul class="navbar-nav">
-        {% if user.is_authenticated %}
-            <li class="nav-item">
-                <a class="navbar-brand" href="{% url 'lista_usuarios' %}">Usuários</a>
-            </li>
-            <li class="nav-item">
-                <a class="navbar-brand" href="{% url 'index' %}">Importações</a>
-            </li>
-            <li class="nav-item">
-                <a class="navbar-brand" href="{% url 'suspeitas' %}">Transações Suspeitas</a>
-            </li>
+    {% if user.is_authenticated %}
+        <li class="nav-item">
+            <a class="navbar-brand" href="{% url 'lista_usuarios' %}">Usuários</a>
+        </li>
+        <li class="nav-item">
+            <a class="navbar-brand" href="{% url 'index' %}">Importações</a>
+        </li>
+        <li class="nav-item">
+            <a class="navbar-brand" href="{% url 'suspeitas' %}">Transações Suspeitas</a>
+        </li>
     </ul>
     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li class="nav-item ml-auto ms-auto mb-2 mb-lg-0">
-                <a class="navbar-brand" href="{% url 'logout' %}">Sair</a>
-            </li>
-    </ul>
-        {% else %}
-            <li class="nav-item">
-                <a class="navbar-brand" href="{% url 'login' %}"></a>
-            </li>
-
+        {% if user.is_superuser %}
+        <li class="nav-item">
+            <a class="navbar-brand" href="{% url 'admin:index' %}">Admin</a>
+        </li>
         {% endif %}
+        <li class="nav-item ml-auto ms-auto mb-2 mb-lg-0">
+            <a class="navbar-brand" href="{% url 'logout' %}">Sair</a>
+        </li>
+    </ul>
+    {% else %}
+    <li class="nav-item">
+        <a class="navbar-brand" href="{% url 'login' %}">Login</a>
+    </li>
+    {% endif %}
 </nav>
 <br>

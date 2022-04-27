@@ -8,50 +8,46 @@
     <h2 class="display-5 text-center">Importar Transações</h2>
 {% include 'partials/_alerts.html' %}
 
-        <div class="input-group mb-3 w-50 flex-column mx-auto">
-            <form method="POST" action="{% url 'index' %}" enctype="multipart/form-data">
-
-                <div class="mb-3 text-center"><br>
-                <div class="input-group">
-                    <input name="file_name" class="form-control" id="formFileLg" type="file" style="width: 500px;">
-
-                    {% csrf_token %}
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-dark input-group-append">Importar</button>
-                </div>
-                </div>
-                </div>
-            </form>
-        </div><br>
-
-
-            <h2 class="display-5 text-center">Importações Realizadas</h2><br>
-            <div class="w-50 mx-auto">
-                <table class="table table-dark table-hover table-borderless">
-                    <thead class="table-secondary">
-                        <tr>
-                            <td scope="col">Datas das Transações</td>
-                            <td scope="col">Datas das Importações</td>
-                            <td scope="col">Usuários</td>
-                            <td scope="col">Opções</td>
-                        </tr>
-                    <thead>
-                    <tbody>
-                        {% for objeto in todos_objetos %}
-                        <tr>
-                            <td>{{ objeto.data_transacao }}</td>
-                            <td>{{ objeto.data_importacao }}</td>
-                            <td>{{ objeto.id_usuario|get_item }}</td>
-                            <td>
-                                <div class="mb-3 input-group">
-                                    <form method="GET" action="{% url 'detalhar' objeto.data_transacao|get_url %}">
-                                        <button type="submit" class="btn btn-secondary">Detalhar</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+<div class="mb-3 w-50 flex-column mx-auto">
+    <form method="POST" action="{% url 'index' %}" enctype="multipart/form-data"><br>
+        <div class="input-group text-center">
+            <input name="file_name" class="form-control" id="formFileLg" type="file" style="width: 500px;">
+            {% csrf_token %}
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-dark input-group-append">Importar</button>
             </div>
+        </div>
+    </form>
+</div><br>
+
+
+<h2 class="display-5 text-center">Importações Realizadas</h2><br>
+<div class="w-50 mx-auto">
+    <table class="table table-dark table-hover table-borderless">
+        <thead class="table-secondary">
+            <tr>
+                <td scope="col">Datas das Transações</td>
+                <td scope="col">Datas das Importações</td>
+                <td scope="col">Usuários</td>
+                <td scope="col">Opções</td>
+            </tr>
+        <thead>
+        <tbody>
+        {% for objeto in todos_objetos %}
+            <tr>
+                <td>{{ objeto.data_transacao }}</td>
+                <td>{{ objeto.data_importacao }}</td>
+                <td>{{ objeto.id_usuario|get_item }}</td>
+                <td>
+                    <div class="mb-3 input-group">
+                        <form method="GET" action="{% url 'detalhar' objeto.data_transacao|get_url %}">
+                            <button type="submit" class="btn btn-secondary">Detalhar</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

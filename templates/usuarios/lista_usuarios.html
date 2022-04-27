@@ -5,10 +5,10 @@
 {% include 'partials/_menu.html' %}
 <h2 class="display-5 text-center">Usuários Cadastrados</h2><br>
 {% include 'partials/_alerts.html' %}
+
 <div class="text-center">
     <a href="{% url 'cadastro' %}" class="btn btn-dark" role="button">Novo</a>
-</div>
-<br>
+</div><br>
 
 <table class="table table-dark table-hover table-borderless w-50 mx-auto">
     <thead class="table-secondary">
@@ -19,6 +19,7 @@
             <td scope="col">OPÇÕES</td>
         </tr>
     <thead>
+
     <tbody>
     {% for usuario in usuarios_validos %}
         <tr>

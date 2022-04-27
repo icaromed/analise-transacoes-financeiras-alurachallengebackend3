@@ -2,7 +2,6 @@
 {% load static %}
 {% block content %}
 
-
 {% include 'partials/_menu.html' %}
 <h2 class="display-5 text-center">Editar Usuário</h2><br>
 {% include 'partials/_alerts.html' %}
@@ -10,17 +9,13 @@
 <div class="input-group mb-3">
     <form class="w-50 mx-auto" method="POST" action="{% url 'editar_usuario' user.id %}" enctype="multipart/form-data">
         {% csrf_token %}
-         <div class="form-group mb-3">
+         <div class="form-group">
             <label for="username">Nome de Usuário:</label>
-            <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}">
-        </div>
-        <div class="form-group mb-3">
+            <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}"><br>
             <label for="email">Email:</label>
             <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
-        </div>
-
+        </div><br>
         <button type="submit" class="btn btn-dark input-group-append">Atualizar</button>
     </form>
 </div>
-
 {% endblock %}
