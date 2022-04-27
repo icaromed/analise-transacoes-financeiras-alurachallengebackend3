@@ -2,15 +2,20 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from apps.transacoes.models import Transacao, ContaSuspeita, AgenciaSuspeita
 from apps.usuarios.functions import *
+from ..forms import Suspeita
 
 
 def suspeitas(request):
     """renders the page with the suspect transactions"""
     if sem_permissao(request):
         return redirect('login')
-
+    if request.method == "GET":
+        context={
+            "form": Suspeita()
+        }
+        return render(request, 'transacoes/suspeitas.html', context)
     if request.method == "POST":
-        data = request.POST['date']
+        data = request.POST['data']
         if not data:
             messages.error(request, "Selecione o mês e o ano")
             return redirect('suspeitas')
@@ -23,10 +28,12 @@ def suspeitas(request):
             "data": data,
             "transacoes_suspeitas": transacoes_suspeitas(transacoes_data),
             "contas_suspeitas": movimentacoes_suspeitas(transacoes_data, 'contas'),
-            "agencias_suspeitas": movimentacoes_suspeitas(transacoes_data, 'agencias')
+            "agencias_suspeitas": movimentacoes_suspeitas(transacoes_data, 'agencias'),
+            "form": Suspeita(initial={'data':data}),
+
         }
         return render(request, 'transacoes/suspeitas.html', context)
-    return render(request, 'transacoes/suspeitas.html')
+
 
 
 def transacoes_suspeitas(transacoes_data):

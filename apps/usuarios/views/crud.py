@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from apps.usuarios.models import User
 from..functions import *
+from ..forms import EditarUsuario
 
 
 def lista_usuarios(request):
@@ -43,9 +44,13 @@ def editar_usuario(request, id_n):
         return redirect('login')
 
     user = get_object_or_404(User, id=id_n)
+    context = {
+        "user": user,
+        "form": EditarUsuario(initial={"email": user.email, "username": user.username}),
+    }
 
     if request.method == "GET":
-        return render(request, 'usuarios/editar_usuario.html', {"user": user})
+        return render(request, 'usuarios/editar_usuario.html', context)
 
     if request.method == "POST":
 

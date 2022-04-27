@@ -10,9 +10,8 @@
 
 <div class="w-50 flex-column mx-auto">
     <form method="POST" action="{% url 'suspeitas' %}"> {% csrf_token %}
-        <div class="nativeDatePicker text-center input-group mb-3"><br>
-            <span class="input-group-text">Selecione o mês para analisar as transações</span>
-            <input type = "month" id="date" name="date" value="{{ data }}" placeholder="2022-01">
+        <div class="nativeDatePicker text-center input-group mb-3">
+            {{form}}
             <div class="input-group-append">
                 <button type="submit" class="btn btn-dark input-group-append">Realizar análise</button>
             </div>

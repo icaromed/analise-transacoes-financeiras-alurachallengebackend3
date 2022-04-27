@@ -94,7 +94,7 @@ def erro_editar(username, email, user, id_n):
         return'O Email não pode ficar vazio'
 
     if username == user.username and email == user.email:
-        return 'Os dados do usuário foram atualizados'
+        return 'Os dados do usuário não foram alterados '
 
     if User.objects.filter(username=username).exclude(id=id_n).exists():
         return 'Este Nome de Usuário já foi cadastrado'

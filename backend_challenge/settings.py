@@ -13,7 +13,6 @@ import os
 from pathlib import Path
 from django.contrib import messages
 from decouple import config
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tempus_dominus',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +144,5 @@ AUTH_USER_MODEL = 'usuarios.User'
 
 # Date Format
 DATE_INPUT_FORMATS = ['%m-%Y']
+
+TEMPUS_DOMINUS_DATE_FORMAT = 'YYYY-MM'

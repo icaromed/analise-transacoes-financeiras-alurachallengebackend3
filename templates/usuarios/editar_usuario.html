@@ -9,11 +9,8 @@
 <div class="input-group mb-3">
     <form class="w-50 mx-auto" method="POST" action="{% url 'editar_usuario' user.id %}" enctype="multipart/form-data">
         {% csrf_token %}
-         <div class="form-group">
-            <label for="username">Nome de Usuário:</label>
-            <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}"><br>
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+         <div class="form-group form-label">
+         {{ form }}
         </div><br>
         <button type="submit" class="btn btn-dark input-group-append">Atualizar</button>
     </form>

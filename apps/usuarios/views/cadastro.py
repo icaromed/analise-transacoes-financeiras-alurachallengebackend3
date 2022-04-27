@@ -3,6 +3,7 @@ from django.contrib import messages
 from apps.usuarios.models import User
 import random
 from..functions import *
+from ..forms import Cadastro
 
 
 def cadastro(request):
@@ -11,11 +12,14 @@ def cadastro(request):
         return redirect('login')
 
     if request.method == "GET":
-        return render(request, 'usuarios/cadastro.html')
+        context = {
+            "form": Cadastro()
+        }
+        return render(request, 'usuarios/cadastro.html', context)
 
     elif request.method == "POST":
         email = request.POST['email']
-        username = request.POST['usuario']
+        username = request.POST['username']
         senha = str(random.random())[2:8]
 
         erro = erro_cadastro(username, email)

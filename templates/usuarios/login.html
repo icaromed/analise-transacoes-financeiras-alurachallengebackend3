@@ -8,11 +8,8 @@
 
 <form class="w-50 mx-auto" method="POST" action="{% url 'login' %}" enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="form-group mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" name="email" required><br>
-        <label for="senha" class="form-label">Senha</label>
-        <input type="password" class="form-control" id="senha" name="senha" required>
+    <div class="form-group mb-3 form-label">
+    {{ form }}
     </div>
     <button type="submit" class="btn btn-dark">Login</button>
 </form>
