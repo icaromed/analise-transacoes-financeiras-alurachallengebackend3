@@ -1,18 +1,23 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .error import *
+from ..functions import *
+from ..forms import *
 
 
 def login(request):
-    """Login"""
+    """renders a login page"""
     if request.method == "GET":
-        return render(request, 'usuarios/login.html')
+        form = Login()
+        context = {
+            'form': form
+        }
+        return render(request, 'usuarios/login.html', context)
 
     elif request.method == "POST":
         email = request.POST['email']
         senha = request.POST['senha']
 
-        if email_erro(email):
+        if erro_email(email):
             messages.error(request, 'Email não cadastrado')
             return redirect('login')
 
@@ -27,7 +32,7 @@ def login(request):
 
 
 def logout(request):
-    """Logout"""
+    """renders a logout page"""
     if not request.user.is_authenticated:
         return redirect('login')
     if request.user.deleted:

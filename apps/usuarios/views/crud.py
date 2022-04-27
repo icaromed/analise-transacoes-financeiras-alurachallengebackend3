@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from apps.usuarios.models import User
+from..functions import *
 
 
 def lista_usuarios(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    if request.user.deleted:
+    """renders a page containing all the registred users (but Admin and deleted users)"""
+    if sem_permissao(request):
         return redirect('login')
 
     usuarios_validos = User.objects.exclude(username='Admin').exclude(deleted=True)
@@ -18,19 +18,15 @@ def lista_usuarios(request):
 
 
 def remover_usuario(request, id_n):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    if request.user.deleted:
+    """deletes a user"""
+    if sem_permissao(request):
         return redirect('login')
 
     user = get_object_or_404(User, id=id_n)
 
-    if int(id_n) == request.user.id:
-        messages.error(request, 'Não é possivel excluir o próprio usuário')
-        return redirect('lista_usuarios')
-
-    if int(id_n) == User.objects.filter(username="Admin").get().id:
-        messages.error(request, 'Não é possivel excluir o usuário padrão')
+    erro = erro_remover(id_n, request)
+    if erro:
+        messages.error(request, erro)
         return redirect('lista_usuarios')
 
     if request.method == "POST":
@@ -42,9 +38,8 @@ def remover_usuario(request, id_n):
 
 
 def editar_usuario(request, id_n):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    if request.user.deleted:
+    """renders a page for editing a given user"""
+    if sem_permissao(request):
         return redirect('login')
 
     user = get_object_or_404(User, id=id_n)
@@ -57,24 +52,9 @@ def editar_usuario(request, id_n):
         username = request.POST['username']
         email = request.POST['email']
 
-        if not username.strip():
-            messages.error(request, 'O usuário não pode ficar vazio')
-            return redirect('lista_usuarios')
-
-        if not email.strip():
-            messages.error(request, 'O Email não pode ficar vazio')
-            return redirect('lista_usuarios')
-
-        if username == user.username and email == user.email:
-            messages.success(request, 'Os dados do usuário foram atualizados')
-            return redirect('lista_usuarios')
-
-        if User.objects.filter(username=username).exclude(id=id_n).exists():
-            messages.error(request, 'Este Nome de Usuário já foi cadastrado')
-            return redirect('lista_usuarios')
-
-        if User.objects.filter(email=email).exclude(id=id_n).exists():
-            messages.error(request, 'Este Email já foi cadastrado')
+        erro = erro_editar(username, email, user, id_n)
+        if erro:
+            messages.error(request, erro)
             return redirect('lista_usuarios')
         else:
             user.username = username

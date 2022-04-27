@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from apps.transacoes.models import Transacao
+from apps.usuarios.functions import *
 
 
 def detalhar(request, data):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    if request.user.deleted:
+    """renders a page with detail of a chosen transaction"""
+    if sem_permissao(request):
         return redirect('login')
 
     data = f"{data[0:2]}/{data[2:4]}/{data[4:]}"
