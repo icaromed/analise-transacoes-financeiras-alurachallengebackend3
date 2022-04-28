@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from apps.usuarios.functions import *
 from ..functions import *
+from ..forms import Arquivo
 
 
 def index(request):
@@ -12,7 +13,11 @@ def index(request):
     todos_objetos = DataImportacoes.objects.all().order_by('-data_transacao')
 
     if request.method == 'GET':
-        return render(request, 'transacoes/index.html', {"todos_objetos": todos_objetos})
+        context = {
+            'form': Arquivo(),
+            'todos_objetos': todos_objetos,
+        }
+        return render(request, 'transacoes/index.html', context)
 
     elif request.method == 'POST':
         if not request.FILES:

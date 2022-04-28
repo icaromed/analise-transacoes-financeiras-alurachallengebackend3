@@ -10,7 +10,7 @@ def suspeitas(request):
     if sem_permissao(request):
         return redirect('login')
     if request.method == "GET":
-        context={
+        context = {
             "form": Suspeita()
         }
         return render(request, 'transacoes/suspeitas.html', context)
@@ -29,7 +29,7 @@ def suspeitas(request):
             "transacoes_suspeitas": transacoes_suspeitas(transacoes_data),
             "contas_suspeitas": movimentacoes_suspeitas(transacoes_data, 'contas'),
             "agencias_suspeitas": movimentacoes_suspeitas(transacoes_data, 'agencias'),
-            "form": Suspeita(initial={'data':data}),
+            "form": Suspeita(), # options = {'defaultDate': data}
 
         }
         return render(request, 'transacoes/suspeitas.html', context)

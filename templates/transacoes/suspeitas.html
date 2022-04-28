@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 {% load id_user %}
 {% load get_url %}
 {% block content %}
@@ -9,20 +10,22 @@
 {% include 'partials/_alerts.html' %}
 
 <div class="w-50 flex-column mx-auto">
-    <form method="POST" action="{% url 'suspeitas' %}"> {% csrf_token %}
-        <div class="nativeDatePicker text-center input-group mb-3">
-            {{form}}
-            <div class="input-group-append">
-                <button type="submit" class="btn btn-dark input-group-append">Realizar análise</button>
-            </div>
+    <form method="POST" action="{% url 'suspeitas' %}">
+        {% csrf_token %}
+        {% for field in form.visible_fields %}
+        <div class="text-center input-group mb-3">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field|add_class:'form-control' }}
         </div>
+        {% endfor %}
+         <button type="submit" class="btn btn-dark">Realizar análise</button>
     </form>
 </div><br>
 
 {% if data %}
 <h2 class="display-5 text-center">Transações Suspeitas</h2><br>
-<table class="table table-dark table-bordered table-hover w-50 mx-auto">
-    <thead class="table-secondary">
+<table class="table table-dark table-hover w-50 mx-auto">
+    <thead class="table-light table-bordered">
         <tr>
             <td colspan="3">ORIGEM</td>
             <td colspan="3">DESTINO</td>
@@ -38,7 +41,7 @@
         </tr>
     </thead>
 
-    <tbody>
+    <tbody class="table-bordered border-dark">
     {% for transacao in transacoes_suspeitas %}
         <tr>
             <td>{{transacao.banco_origem}}</td>
@@ -54,8 +57,8 @@
 </table>
 
 <h2 class="display-5 text-center">Contas Suspeitas</h2><br>
-<table class="table table-dark table-bordered table-hover w-50 mx-auto">
-    <thead class="table-secondary">
+<table class="table table-dark table-hover w-50 mx-auto">
+    <thead class="table-light table-bordered">
         <tr>
             <td>BANCO</td>
             <td>AGÊNCIA</td>
@@ -65,7 +68,7 @@
         </tr>
     </thead>
 
-    <tbody>
+    <tbody class="table-bordered border-dark">
     {% for conta in contas_suspeitas %}
         <tr>
             <td>{{conta.banco}}</td>
@@ -79,8 +82,8 @@
 </table>
 
 <h2 class="display-5 text-center">Agências Suspeitas</h2><br>
-<table class="table table-dark table-bordered table-hover w-50 mx-auto">
-    <thead class="table-secondary">
+<table class="table table-dark   table-hover w-50 mx-auto">
+    <thead class="table-light table-bordered">
         <tr>
              <td>BANCO</td>
              <td>AGÊNCIA</td>
@@ -89,7 +92,7 @@
         </tr>
     </thead>
 
-    <tbody>
+    <tbody class="table-bordered border-dark">
     {% for agencia in agencias_suspeitas %}
         <tr>
              <td>{{ agencia.banco }}</td>

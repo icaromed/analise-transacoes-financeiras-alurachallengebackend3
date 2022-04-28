@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 {% block content %}
 
 {% include 'partials/_menu.html' %}
@@ -8,9 +9,12 @@
 
 <form class="w-50 mx-auto" method="POST" action="{% url 'cadastro' %}" enctype="multipart/form-data">
     {% csrf_token %}
+    {% for field in form.visible_fields %}
     <div class="form-group mb-3 form-label">
-    {{form}}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field|add_class:'form-control' }}
     </div>
+    {% endfor %}
     <button type="submit" class="btn btn-dark">Cadastrar</button>
 </form>
 {% endblock %}

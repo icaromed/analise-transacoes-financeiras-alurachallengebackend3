@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 {% load id_user %}
 {% load get_url %}
 {% block content %}
@@ -11,8 +12,10 @@
 <div class="mb-3 w-50 flex-column mx-auto">
     <form method="POST" action="{% url 'index' %}" enctype="multipart/form-data"><br>
         <div class="input-group text-center">
-            <input name="file_name" class="form-control" id="formFileLg" type="file" style="width: 500px;">
             {% csrf_token %}
+            {% for field in form.visible_fields %}
+                {{ field|add_class:'form-control form-group' }}
+            {% endfor %}
             <div class="input-group-append">
                 <button type="submit" class="btn btn-dark input-group-append">Importar</button>
             </div>

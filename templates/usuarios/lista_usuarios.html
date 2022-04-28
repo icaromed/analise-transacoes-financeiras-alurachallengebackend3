@@ -6,9 +6,9 @@
 <h2 class="display-5 text-center">Usuários Cadastrados</h2><br>
 {% include 'partials/_alerts.html' %}
 
-<div class="text-center">
+<div class=" mb-3  w-50 mx-auto">
     <a href="{% url 'cadastro' %}" class="btn btn-dark" role="button">Novo</a>
-</div><br>
+</div>
 
 <table class="table table-dark table-hover table-borderless w-50 mx-auto">
     <thead class="table-secondary">
@@ -27,14 +27,15 @@
             <td>{{ usuario.username }}</td>
             <td>{{ usuario.email }}</td>
             <td>
-                <div class="mb-3 input-group">
-                    <form method="GET" action="{% url 'editar_usuario' usuario.id %}">
-                        <button type="submit" class="btn btn-secondary">Editar</button>
-                    </form>
-                    <form method="POST" action="{% url 'remover_usuario' usuario.id %}">
-                        {% csrf_token %}
-                            <button type="submit" class="btn btn-danger">Remover</button>
-                    </form>
+                <div class="btn-group">
+                <form method="GET" action="{% url 'editar_usuario' usuario.id %}">
+
+                    <button type="submit" class="btn btn-secondary">Editar</button>
+                </form>
+                <form method="POST" action="{% url 'remover_usuario' usuario.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Remover</button>
+                </form>
                 </div>
             </td>
         </tr>
