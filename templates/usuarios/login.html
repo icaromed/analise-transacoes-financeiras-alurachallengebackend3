@@ -12,7 +12,7 @@
     {% for field in form.visible_fields %}
     <div class="form-group mb-3 form-label">
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field|add_class:'form-control' }}
+        {{field|add_class:'form-control'}}
     </div>
     {% endfor %}
     <button type="submit" class="btn btn-dark">Login</button>

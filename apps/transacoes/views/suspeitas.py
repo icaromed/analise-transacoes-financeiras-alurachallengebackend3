@@ -35,7 +35,6 @@ def suspeitas(request):
         return render(request, 'transacoes/suspeitas.html', context)
 
 
-
 def transacoes_suspeitas(transacoes_data):
     """checks for existence of suspect transactions based on month's transactions"""
     transacoes = []
